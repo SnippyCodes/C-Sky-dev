@@ -2,6 +2,7 @@ package com.kevin.tiertagger;
 
 import com.kevin.tiertagger.model.GameMode;
 import com.kevin.tiertagger.model.PlayerInfo;
+import net.minecraft.client.Minecraft;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -10,7 +11,7 @@ import java.util.concurrent.ExecutionException;
 
 public class TierCache {
     private static final List<GameMode> GAMEMODES = new ArrayList<>();
-    private static final Map<UUID, Optional<Map<String, PlayerInfo.Ranking>>> TIERS = new ConcurrentHashMap<>();
+    private static final Map<UUID, CompletableFuture<Optional<Map<String, PlayerInfo.Ranking>>>> TIERS = new ConcurrentHashMap<>();
 
     public static void init() {
         try {
@@ -36,19 +37,54 @@ public class TierCache {
         String linked = TierTagger.getManager().getConfig().getLinkedPlayers().get(uuid.toString());
         UUID finalUuid = linked != null ? parseUUID(linked) : uuid;
 
-        return TIERS.computeIfAbsent(uuid, u -> {
-            if (finalUuid.version() == 4 || linked != null) {
-                PlayerInfo.get(TierTagger.getClient(), finalUuid).thenAccept(info -> TIERS.put(uuid, Optional.ofNullable(info != null ? info.rankings() : null)));
-            }
+        CompletableFuture<Optional<Map<String, PlayerInfo.Ranking>>> existing = TIERS.get(uuid);
+        if (existing != null) {
+            return existing.isDone() ? existing.join() : Optional.empty();
+        }
 
-            return Optional.empty();
+        CompletableFuture<Optional<Map<String, PlayerInfo.Ranking>>> future = new CompletableFuture<>();
+        CompletableFuture<Optional<Map<String, PlayerInfo.Ranking>>> race = TIERS.putIfAbsent(uuid, future);
+        if (race != null) {
+            return race.isDone() ? race.join() : Optional.empty();
+        }
+
+        PlayerInfo.get(TierTagger.getClient(), finalUuid).thenAccept(info -> {
+            if (info != null) {
+                future.complete(Optional.of(info.rankings()));
+            } else {
+                String username = getIngameName(uuid);
+                if (username != null) {
+                    PlayerInfo.search(TierTagger.getClient(), username).thenAccept(p -> {
+                        if (p != null && p.rankings() != null) {
+                            TierTagger.getManager().getConfig().getLinkedPlayers()
+                                    .put(uuid.toString(), p.uuid());
+                            TierTagger.getManager().saveConfig();
+                            future.complete(Optional.of(p.rankings()));
+                        } else {
+                            future.complete(Optional.empty());
+                        }
+                    });
+                } else {
+                    future.complete(Optional.empty());
+                }
+            }
         });
+
+        return Optional.empty();
+    }
+
+    private static String getIngameName(UUID uuid) {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.getConnection() == null) return null;
+        net.minecraft.client.multiplayer.PlayerInfo info = mc.getConnection().getPlayerInfo(uuid);
+        return info != null ? info.getProfile().name() : null;
     }
 
     public static CompletableFuture<PlayerInfo> searchPlayer(String query) {
         return PlayerInfo.search(TierTagger.getClient(), query).thenApply(p -> {
+            if (p == null) return null;
             UUID uuid = parseUUID(p.uuid());
-            TIERS.put(uuid, Optional.of(p.rankings()));
+            TIERS.put(uuid, CompletableFuture.completedFuture(Optional.of(p.rankings())));
             return p;
         });
     }

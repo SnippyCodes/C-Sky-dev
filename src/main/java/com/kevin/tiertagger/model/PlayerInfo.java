@@ -67,8 +67,19 @@ public record PlayerInfo(String uuid, String name, Map<String, Ranking> rankings
         final HttpRequest request = HttpRequest.newBuilder(URI.create(endpoint)).GET().build();
 
         return client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
-                .thenApply(HttpResponse::body)
-                .thenApply(s -> TierTagger.GSON.fromJson(s, PlayerInfo.class))
+                .thenApply(response -> {
+                    if (response.statusCode() == 404) {
+                        return (PlayerInfo) null;
+                    }
+                    if (response.statusCode() != 200) {
+                        return (PlayerInfo) null;
+                    }
+                    PlayerInfo info = TierTagger.GSON.fromJson(response.body(), PlayerInfo.class);
+                    if (info == null || (info.rankings() == null || info.rankings().isEmpty())) {
+                        return (PlayerInfo) null;
+                    }
+                    return info;
+                })
                 .whenComplete((i, t) -> {
                     if (t != null) TierTagger.getLogger().warn("Error getting player info ({})", uuid, t);
                 });
@@ -79,9 +90,9 @@ public record PlayerInfo(String uuid, String name, Map<String, Ranking> rankings
         final HttpRequest request = HttpRequest.newBuilder(URI.create(endpoint)).GET().build();
 
         return client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
-                .thenApply(HttpResponse::body)
-                .thenApply(s -> {
-                    JsonObject root = TierTagger.GSON.fromJson(s, JsonObject.class);
+                .thenApply(response -> {
+                    if (response.statusCode() != 200) return null;
+                    JsonObject root = TierTagger.GSON.fromJson(response.body(), JsonObject.class);
                     JsonArray players = root.getAsJsonArray("players");
                     if (players != null && !players.isEmpty()) {
                         return TierTagger.GSON.fromJson(players.get(0), PlayerInfo.class);

@@ -38,24 +38,27 @@ public class PlayerInfoScreen extends CloseableScreen {
 
         this.addRenderableWidget(this.skin);
 
-        int rankingHeight = this.info.rankings().size() * 11;
+        int rankingCount = (this.info.rankings() != null) ? this.info.rankings().size() : 0;
+        int rankingHeight = rankingCount * 11;
         int infoHeight = 56; // 4 lines of text (10 px tall) + 6 px padding
         int startY = (this.height - infoHeight - rankingHeight) / 2;
         int rankingY = startY + infoHeight;
 
-        for (PlayerInfo.NamedRanking namedRanking : this.info.getSortedTiers()) {
-            // ugly "fix" to avoid crashes if upstream doesn't have the right names
-            if (namedRanking.mode() == null) continue;
+        if (this.info.rankings() != null) {
+            for (PlayerInfo.NamedRanking namedRanking : this.info.getSortedTiers()) {
+                // ugly "fix" to avoid crashes if upstream doesn't have the right names
+                if (namedRanking.mode() == null) continue;
 
-            StringWidget text = new StringWidget(formatTier(namedRanking.mode(), namedRanking.ranking()), this.font);
-            text.setX(this.width / 2 + 5);
-            text.setY(rankingY);
+                StringWidget text = new StringWidget(formatTier(namedRanking.mode(), namedRanking.ranking()), this.font);
+                text.setX(this.width / 2 + 5);
+                text.setY(rankingY);
 
-            String date = DateTimeFormatter.ISO_LOCAL_DATE.withZone(ZoneOffset.UTC).format(Instant.ofEpochSecond(namedRanking.ranking().attained()));
-            Component tooltipText = Component.literal("Attained: " + date + "\nPoints: " + points(namedRanking.ranking())).withStyle(ChatFormatting.GRAY);
-            text.setTooltip(Tooltip.create(tooltipText));
-            this.addRenderableWidget(text);
-            rankingY += 11;
+                String date = DateTimeFormatter.ISO_LOCAL_DATE.withZone(ZoneOffset.UTC).format(Instant.ofEpochSecond(namedRanking.ranking().attained()));
+                Component tooltipText = Component.literal("Attained: " + date + "\nPoints: " + points(namedRanking.ranking())).withStyle(ChatFormatting.GRAY);
+                text.setTooltip(Tooltip.create(tooltipText));
+                this.addRenderableWidget(text);
+                rankingY += 11;
+            }
         }
     }
 
@@ -65,7 +68,7 @@ public class PlayerInfoScreen extends CloseableScreen {
 
         graphics.drawCenteredString(this.font, this.info.name() + "'s profile", this.width / 2, 20, 0xFFFFFFFF);
 
-        int rankingHeight = this.info.rankings().size() * 11;
+        int rankingHeight = (this.info.rankings() != null ? this.info.rankings().size() : 0) * 11;
         int infoHeight = 56; // 4 lines of text (10 px tall) + 6 px padding
         int startY = (this.height - infoHeight - rankingHeight) / 2;
 

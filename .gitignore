@@ -48,6 +48,13 @@ hs_err_pid*
 # .nfs files are created when an open file is removed but is still being accessed
 .nfs*
 
+# IDE
+.vscode/
+.idea/
+
+# Nested repo
+PrimeTiers2/
+
 # General
 .DS_Store
 .AppleDouble

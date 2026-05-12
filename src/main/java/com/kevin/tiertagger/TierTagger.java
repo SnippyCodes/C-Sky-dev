@@ -180,7 +180,13 @@ public class TierTagger implements ModInitializer {
         } else {
             ctx.getSource().sendFeedback(Component.literal("[TierTagger] Searching..."));
             TierCache.searchPlayer(selector.name())
-                    .thenAccept(p -> Minecraft.getInstance().execute(() -> ctx.getSource().sendFeedback(printPlayerInfo(selector.name(), p.rankings()))))
+                    .thenAccept(p -> Minecraft.getInstance().execute(() -> {
+                        if (p == null) {
+                            ctx.getSource().sendError(Component.literal("Could not find player " + selector.name()));
+                        } else {
+                            ctx.getSource().sendFeedback(printPlayerInfo(selector.name(), p.rankings()));
+                        }
+                    }))
                     .exceptionally(t -> {
                         ctx.getSource().sendError(Component.literal("Could not find player " + selector.name()));
                         return null;
@@ -272,8 +278,10 @@ public class TierTagger implements ModInitializer {
                     logger.warn("Error checking for updates", t);
                     return null;
                 }).thenAccept(v -> {
-                    logger.info("Found latest version {}", v.getFriendlyString());
-                    latestVersion = v;
+                    if (v != null) {
+                        logger.info("Found latest version {}", v.getFriendlyString());
+                        latestVersion = v;
+                    }
                 });
     }
 
