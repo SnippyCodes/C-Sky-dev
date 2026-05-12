@@ -52,9 +52,6 @@ hs_err_pid*
 .vscode/
 .idea/
 
-# Nested repo
-PrimeTiers2/
-
 # General
 .DS_Store
 .AppleDouble
@@ -123,6 +120,19 @@ run/
 
 # Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
 !gradle-wrapper.jar
+
+# Environment variables
+.env
+.env.local
+.env.production
+
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Build artifacts
+**/target/
+**/.m2/
 
 # nix
 .direnv/

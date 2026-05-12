@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PrimeTiers | Admin Panel</title>
+  <link rel="stylesheet" href="/css/globals.css"/>
+  <link rel="stylesheet" href="/css/admin.css"/>
+</head>
+<body class="admin-body">
+
+  <!-- Sidebar -->
+  <aside class="admin-sidebar" id="adminSidebar">
+    <div class="admin-sidebar-header">
+      <div class="admin-logo">
+        <svg width="30" height="30" viewBox="0 0 40 40" fill="none">
+          <defs>
+            <linearGradient id="adminLg" x1="0" y1="0" x2="40" y2="40">
+              <stop stop-color="#9333ea"/>
+              <stop offset="1" stop-color="#6d28d9"/>
+            </linearGradient>
+          </defs>
+          <rect width="40" height="40" rx="10" fill="url(#adminLg)"/>
+          <g transform="translate(20,20)">
+            <path d="M-9,-13 L9,-13 L7.5,4 Q0,8 -7.5,4 Z" fill="none" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M-9,-9 Q-15,-7 -14,-2 Q-13,2 -9,1" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            <path d="M9,-9 Q15,-7 14,-2 Q13,2 9,1" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            <path d="M-2.5,4 Q-3,9 -4,12 M2.5,4 Q3,9 4,12" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            <rect x="-7" y="12" width="14" height="3" rx="1.5" fill="none" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+          </g>
+        </svg>
+        <span class="admin-wordmark">
+          <span style="color:var(--text-primary)">Prime</span><span style="color:var(--violet-400)">Tiers</span>
+        </span>
+      </div>
+      <span class="admin-badge">Admin</span>
+    </div>
+
+    <nav class="admin-nav">
+      <a href="#" class="admin-nav-item active" data-page="dashboard">
+        <span class="nav-icon">📊</span> Dashboard
+      </a>
+      <a href="#" class="admin-nav-item" data-page="players">
+        <span class="nav-icon">👥</span> Players
+      </a>
+      <a href="#" class="admin-nav-item" data-page="tiers">
+        <span class="nav-icon">🏆</span> Tier Management
+      </a>
+      <a href="#" class="admin-nav-item" data-page="history">
+        <span class="nav-icon">📋</span> Audit Log
+      </a>
+      <a href="#" class="admin-nav-item" data-page="testers">
+        <span class="nav-icon">🎯</span> Testers
+      </a>
+      <a href="#" class="admin-nav-item" data-page="settings">
+        <span class="nav-icon">⚙️</span> Settings
+      </a>
+    </nav>
+
+    <div class="admin-sidebar-footer">
+      <div class="admin-user" id="adminUser">
+        <div class="admin-user-avatar" id="adminAvatar">A</div>
+        <div>
+          <div class="admin-user-name" id="adminUsername">Admin</div>
+          <div class="admin-user-role">Administrator</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;margin-top:12px">
+        <button class="btn btn-danger btn-sm" onclick="logout()"
+                style="width:100%;justify-content:center">
+          Sign Out
+        </button>
+        <a href="/" target="_blank" class="btn btn-secondary btn-sm"
+           style="width:100%;justify-content:center">
+          View Site ↗
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Sidebar overlay (mobile) -->
+  <div class="admin-overlay" id="adminOverlay" onclick="toggleSidebar()"></div>
+
+  <!-- Main Content -->
+  <main class="admin-main" id="adminMain">
+    <div class="admin-topbar">
+      <button class="admin-menu-btn" id="adminMenuBtn" onclick="toggleSidebar()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+      <h1 class="admin-page-title" id="adminPageTitle">Dashboard</h1>
+      <div class="admin-topbar-actions">
+        <button class="btn btn-primary btn-sm" onclick="showAddPlayerModal()">
+          + Add Player
+        </button>
+      </div>
+    </div>
+
+    <div class="admin-content" id="adminContent">
+      <!-- Injected by JS -->
+    </div>
+  </main>
+
+  <div id="toast-container"></div>
+
+  <script src="/js/components.js"></script>
+  <script src="/js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+﻿name: PrimeTiersBot
+version: 2.7.0
+main: com.example.discordqueuebot.DiscordQueuePlugin
+api-version: "1.21"
+author: PavitraXD
+description: PrimeTiers Discord Bot - Queue, Testing & Tier Management System for Minecraft Servers
+load: POSTWORLD
+softdepend: [LuckPerms]
+commands:
+  profile:
+    description: View player's tiers and stats
+    usage: /profile [minecraft-ign]
+    aliases: [tiers]
+  tier:
+    description: Set which tier to display in nametag
+    usage: /tier set <gamemode>
+  roles:
+    description: Generate all LuckPerms tier groups with colored prefixes
+    usage: /roles generate
+    permission: primetiers.admin

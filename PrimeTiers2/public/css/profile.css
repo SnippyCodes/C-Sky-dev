@@ -1,0 +1,264 @@
+/* PrimeTiers - Player Profile */
+
+/* ─── BANNER ─────────────────────────────────────────────────── */
+.pf-banner {
+  height: 200px;
+  position: relative;
+  overflow: hidden;
+}
+
+.pf-banner-bg {
+  position: absolute;
+  inset: 0;
+}
+
+.pf-banner-fade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 30%, var(--bg-base) 100%);
+}
+
+/* ─── HEADER ─────────────────────────────────────────────────── */
+.pf-header {
+  position: relative;
+  z-index: 1;
+  margin-top: -80px;
+  padding-bottom: 40px;
+}
+
+.pf-avatar-wrap {
+  margin-bottom: 16px;
+}
+
+.pf-avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: 16px;
+  border: 3px solid rgba(255,255,255,0.12);
+  object-fit: cover;
+  background: var(--bg-surface);
+  display: block;
+}
+
+.pf-identity {
+  margin-bottom: 24px;
+}
+
+.pf-username {
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  font-weight: 700;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  letter-spacing: -0.02em;
+}
+
+.pf-best-tier {
+  margin-bottom: 10px;
+}
+
+.pf-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+}
+
+.pf-meta span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.pf-meta span + span::before {
+  content: '·';
+  margin-right: 12px;
+  opacity: 0.4;
+}
+
+/* ─── STATS ──────────────────────────────────────────────────── */
+.pf-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.pf-stat {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 18px 16px;
+  text-align: center;
+}
+
+.pf-stat-value {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+  letter-spacing: -0.01em;
+}
+
+.pf-stat-label {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+}
+
+/* ─── ACTIONS ────────────────────────────────────────────────── */
+.pf-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* ─── SECTIONS ───────────────────────────────────────────────── */
+.pf-section {
+  margin-bottom: 48px;
+}
+
+.pf-section-title {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-primary);
+  letter-spacing: 0.01em;
+}
+
+/* ─── MODE CARDS ─────────────────────────────────────────────── */
+.pf-modes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px;
+}
+
+.pf-mode-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: border-color var(--t), background var(--t);
+}
+
+.pf-mode-card:hover {
+  border-color: var(--border-strong);
+  background: var(--bg-card-hover);
+}
+
+.pf-mode-card.pf-mode-untested {
+  opacity: 0.45;
+  border-style: dashed;
+}
+
+.pf-mode-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Mode icon circle — reuse ol-icon styles */
+.pf-mode-icon-wrap {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #1a1a24;
+  border: 1.5px solid rgba(255,255,255,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.pf-mode-name {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--text-primary);
+}
+
+.pf-mode-untested-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.pf-mode-tier {
+  display: flex;
+  align-items: center;
+}
+
+/* Full-width tier badge bar */
+.pf-mode-tier .tier-badge {
+  width: 100%;
+  justify-content: center;
+  padding: 6px 0;
+  font-size: 0.85rem;
+}
+
+.pf-mode-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+/* ─── PLAYER INFO CARD ───────────────────────────────────────── */
+.pf-info-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 20px;
+}
+
+.pf-info-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.pf-info-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.pf-info-code {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--accent-hover);
+  word-break: break-all;
+}
+
+/* ─── NOT FOUND ──────────────────────────────────────────────── */
+.profile-not-found {
+  text-align: center;
+  padding: 120px 24px;
+}
+
+/* ─── RESPONSIVE ─────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .pf-stats { grid-template-columns: repeat(2, 1fr); }
+  .pf-modes-grid { grid-template-columns: repeat(2, 1fr); }
+  .pf-info-row { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 480px) {
+  .pf-modes-grid { grid-template-columns: 1fr; }
+  .pf-stats { grid-template-columns: repeat(2, 1fr); }
+}

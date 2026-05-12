@@ -1,0 +1,81 @@
+# ========================================
+#     PrimeTiers Bot Configuration
+# ========================================
+# Discord Bot Token - Get from https://discord.com/developers/applications
+bot-token: "0"
+
+# Channel IDs (Enable Developer Mode in Discord to copy IDs)
+register-channel-id: 0
+leaderboard-channel-id: 0
+result-channel-id: 0
+ticket-category-id: 0
+request-category-id: 0 # Optional: category to create gamemode request channels (falls back to ticket-category-id)
+tester-role-id: 0 # Optional: role that can view/send in request channels
+logs-channel-id: 0 # Channel for registration logs, ticket creation logs, and transcripts
+
+# Cooldown Settings (in days)
+waitlist-cooldown-days: 5
+gamemode-cooldown-days: 5 # Cooldown before user can select a different gamemode
+
+# ========================================
+#           Web API Settings
+# ========================================
+# Enable REST API for tierlist website integration
+api-enabled: true
+api-port: 20052
+
+# Webhook to send tier updates to the website automatically
+webhook-enabled: true
+webhook-url: "https://primetiers.qzz.io/api/webhook"
+webhook-secret: "Itbz54WhSTzEoKcZSC08jTV6SeVOLXEMgzbKrwHvwRwnl2kj"
+
+# ========================================
+#        LuckPerms Integration
+# ========================================
+# When a player receives a tier, they automatically get the LuckPerms group
+# Group naming format: {gamemode}-{tier}
+# Examples: axe-ht1, nethpot-lt5, sword-ht3
+# Use /roles generate in Minecraft to create all 70 groups automatically!
+luckperms-enabled: true
+
+# ========================================
+#      Waitlist Roles (Discord)
+# ========================================
+# Map gamemode -> Discord role ID
+waitlist-roles:
+  axe-and-shield: 0
+  neth-pot: 0
+  dia-pot: 0
+  smp-kit: 0
+  mace: 0
+  sword: 0
+  uhc: 0
+  cpvp: 0
+
+# ========================================
+#    Waitlist Channels (Discord)
+# ========================================
+# Map gamemode -> waitlist channel ID
+waitlist-channels:
+  axe-and-shield: 0
+  neth-pot: 0
+  dia-pot: 0
+  smp-kit: 0
+  mace: 0
+  sword: 0
+  uhc: 0
+  cpvp: 0
+
+# ========================================
+#      Ticket Categories (Discord)
+# ========================================
+# Map gamemode -> category ID where test channels are created
+ticket-categories:
+  axe-and-shield: 0
+  neth-pot: 0
+  dia-pot: 0
+  smp-kit: 0
+  mace: 0
+  sword: 0
+  uhc: 0
+  cpvp: 0

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PrimeTiers | Leaderboard — Top 100 Players</title>
+  <link rel="stylesheet" href="/css/globals.css"/>
+  <link rel="stylesheet" href="/css/navbar.css"/>
+  <link rel="stylesheet" href="/css/leaderboard.css"/>
+</head>
+<body>
+  <main style="padding-top:80px">
+    <div class="container">
+      <div class="page-header" data-reveal>
+        <h1 class="section-title">🏆 Global Leaderboard</h1>
+        <p class="section-subtitle">The top 100 players across all game modes</p>
+      </div>
+
+      <!-- Controls -->
+      <div class="lb-controls glass-card">
+        <div class="lb-tabs" id="lbRegionTabs">
+          <button class="mode-tab active" data-region="">🌍 Global</button>
+          <button class="mode-tab" data-region="NA">🇺🇸 NA</button>
+          <button class="mode-tab" data-region="EU">🇪🇺 EU</button>
+          <button class="mode-tab" data-region="AS">🌏 AS</button>
+          <button class="mode-tab" data-region="SA">🌎 SA</button>
+          <button class="mode-tab" data-region="OC">🦘 OC</button>
+          <button class="mode-tab" data-region="AF">🌍 AF</button>
+        </div>
+        <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+          <select class="form-select" id="lbModeFilter" style="width:160px">
+            <option value="">All Modes</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Podium (Top 3) -->
+      <div class="podium" id="podium">
+        <div class="skeleton" style="height:280px;border-radius:20px"></div>
+      </div>
+
+      <!-- Table (4–100) -->
+      <div id="lbTableWrap">
+        <div class="skeleton" style="height:400px;border-radius:16px;margin-top:24px"></div>
+      </div>
+    </div>
+  </main>
+
+  <script src="/js/components.js"></script>
+  <script src="/js/leaderboard.js"></script>
+</body>
+</html>

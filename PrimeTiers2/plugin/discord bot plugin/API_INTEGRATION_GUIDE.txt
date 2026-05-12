@@ -1,0 +1,213 @@
+===============================================
+PrimeTiers Web API Integration Guide
+===============================================
+
+1. API URL SETUP
+===============================================
+
+const API_BASE_URL = 'http://PrimePvP.qzz.io:8080/api';
+
+
+2. FETCH PLAYERS FOR TIER LIST
+===============================================
+
+// Fetch players by gamemode
+async function fetchPlayers(gamemode) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/leaderboard?gamemode=${gamemode}`);
+        const data = await response.json();
+        return data.leaderboard;
+    } catch (error) {
+        console.error('Error fetching players:', error);
+        return [];
+    }
+}
+
+// Example: Fetch Axe players
+fetchPlayers('axe-and-shield').then(players => {
+    // Display players in your UI
+    players.forEach(player => {
+        console.log(`${player.rank}. ${player.ign} - ${player.tier}`);
+    });
+});
+
+
+3. GAMEMODE MAPPING
+===============================================
+
+const GAMEMODE_MAP = {
+    'OVERALL': '',
+    'CRYSTAL': 'crystal',
+    'SWORD': 'sword',
+    'UHC': 'uhc',
+    'POT': 'neth-pot',
+    'NETHERITE POT': 'neth-pot',
+    'DIAPOT': 'dia-pot',
+    'SMP': 'smp-kit',
+    'AXE': 'axe-and-shield',
+    'MACE': 'mace',
+    'CPVP': 'cpvp'
+};
+
+// When user clicks gamemode button
+function onGamemodeClick(gamemodeName) {
+    const apiGamemode = GAMEMODE_MAP[gamemodeName];
+    fetchPlayers(apiGamemode).then(displayPlayers);
+}
+
+
+4. DISPLAY PLAYERS WITH SKINS
+===============================================
+
+function displayPlayers(players) {
+    const container = document.getElementById('player-list');
+    container.innerHTML = '';
+    
+    players.forEach(player => {
+        const skinUrl = `https://visage.surgeplay.com/bust/${player.ign}?overlay`;
+        
+        container.innerHTML += `
+            <div class="player-card">
+                <img src="${skinUrl}" alt="${player.ign}">
+                <h3>${player.ign}</h3>
+                <p>Rank: ${player.rank}</p>
+                <p>Tier: ${player.tier}</p>
+                <p>Points: ${player.points}</p>
+            </div>
+        `;
+    });
+}
+
+
+5. FETCH ALL PLAYERS
+===============================================
+
+async function fetchAllPlayers() {
+    const response = await fetch(`${API_BASE_URL}/players`);
+    const data = await response.json();
+    return data.players;
+}
+
+
+6. FETCH TESTERS
+===============================================
+
+async function fetchTesters() {
+    const response = await fetch(`${API_BASE_URL}/testers`);
+    const data = await response.json();
+    return data.testers;
+}
+
+
+7. FETCH STATS
+===============================================
+
+async function fetchStats() {
+    const response = await fetch(`${API_BASE_URL}/stats`);
+    const data = await response.json();
+    return data;
+}
+
+
+8. REAL-TIME UPDATES
+===============================================
+
+// Refresh every 30 seconds
+setInterval(() => {
+    const currentGamemode = getCurrentGamemode();
+    fetchPlayers(currentGamemode).then(displayPlayers);
+}, 30000);
+
+
+9. SERVER IP CONFIGURATION
+===============================================
+
+// Development
+const API_BASE_URL = 'http://localhost:8080/api';
+
+// Production
+const API_BASE_URL = 'http://PrimePvP.qzz.io:8080/api';
+
+
+10. QUICK TEST IN BROWSER CONSOLE
+===============================================
+
+fetch('http://PrimePvP.qzz.io:8080/api/players')
+    .then(r => r.json())
+    .then(console.log);
+
+
+11. API ENDPOINTS
+===============================================
+
+GET /api/players
+- Returns all players with their tiers
+
+GET /api/leaderboard?gamemode=axe-and-shield
+- Returns leaderboard for specific gamemode
+
+GET /api/leaderboard
+- Returns overall leaderboard
+
+GET /api/testers
+- Returns tester statistics
+
+GET /api/stats
+- Returns server statistics
+
+
+12. RESPONSE EXAMPLES
+===============================================
+
+/api/players Response:
+{
+  "players": [
+    {
+      "ign": "SenseiRaiii",
+      "tiers": {
+        "axe-and-shield": "HT1",
+        "sword": "LT2"
+      },
+      "totalPoints": 80
+    }
+  ],
+  "count": 1
+}
+
+/api/leaderboard?gamemode=axe-and-shield Response:
+{
+  "gamemode": "axe-and-shield",
+  "leaderboard": [
+    {
+      "rank": 1,
+      "ign": "SenseiRaiii",
+      "tier": "HT1",
+      "points": 60
+    }
+  ]
+}
+
+
+13. CONFIG.YML SETTINGS
+===============================================
+
+api-enabled: true
+api-port: 8080
+
+
+14. GAMEMODE KEYS
+===============================================
+
+- axe-and-shield
+- neth-pot
+- dia-pot
+- smp-kit
+- mace
+- sword
+- uhc
+- cpvp
+
+
+===============================================
+Build: target\primetiers-bot-2.3.0.jar
+===============================================

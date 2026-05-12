@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PrimeTiers | Admin Login</title>
+  <link rel="stylesheet" href="/css/globals.css"/>
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .login-wrap {
+      width: 100%;
+      max-width: 400px;
+      padding: 0 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .login-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 40px 36px;
+    }
+
+    .login-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 8px;
+    }
+
+    .login-wordmark {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+
+    .login-wordmark .tiers { color: var(--violet-400); }
+
+    .login-subtitle {
+      text-align: center;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 32px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .error-msg {
+      background: rgba(239,68,68,0.1);
+      border: 1px solid rgba(239,68,68,0.25);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      font-size: 0.85rem;
+      color: #f87171;
+      margin-bottom: 18px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-wrap">
+    <div class="login-card">
+      <div class="login-logo">
+        <svg width="36" height="36" viewBox="0 0 40 40" fill="none">
+          <defs>
+            <linearGradient id="lg" x1="0" y1="0" x2="40" y2="40">
+              <stop stop-color="#9333ea"/>
+              <stop offset="1" stop-color="#6d28d9"/>
+            </linearGradient>
+          </defs>
+          <rect width="40" height="40" rx="10" fill="url(#lg)"/>
+          <g transform="translate(20,20)">
+            <path d="M-9,-13 L9,-13 L7.5,4 Q0,8 -7.5,4 Z" fill="none" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M-9,-9 Q-15,-7 -14,-2 Q-13,2 -9,1" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            <path d="M9,-9 Q15,-7 14,-2 Q13,2 9,1" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            <path d="M-2.5,4 Q-3,9 -4,12 M2.5,4 Q3,9 4,12" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            <rect x="-7" y="12" width="14" height="3" rx="1.5" fill="none" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+          </g>
+        </svg>
+        <div class="login-wordmark">
+          <span>Prime</span><span class="tiers">Tiers</span>
+        </div>
+      </div>
+      <div class="login-subtitle">Admin Panel</div>
+
+      <div class="error-msg" id="errorMsg"></div>
+
+      <form id="loginForm">
+        <div class="form-group">
+          <label class="form-label">Username</label>
+          <input type="text" class="form-input" id="username" name="username"
+                 autocomplete="username" required autofocus/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" class="form-input" id="password" name="password"
+                 autocomplete="current-password" required/>
+        </div>
+        <button type="submit" class="btn btn-primary" id="loginBtn"
+                style="width:100%;justify-content:center;margin-top:4px">
+          Sign In
+        </button>
+      </form>
+
+      <div style="text-align:center;margin-top:20px">
+        <a href="/" style="font-size:0.8rem;color:var(--text-muted)">← Back to site</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('loginBtn');
+      const errorMsg = document.getElementById('errorMsg');
+      btn.textContent = 'Signing in...';
+      btn.disabled = true;
+      errorMsg.style.display = 'none';
+
+      try {
+        const res = await fetch('/api/admin/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({
+            username: document.getElementById('username').value,
+            password: document.getElementById('password').value,
+          }),
+        });
+        const data = await res.json();
+        if (res.ok) {
+          window.location.href = '/admin';
+        } else {
+          errorMsg.textContent = data.error || 'Login failed';
+          errorMsg.style.display = 'block';
+          btn.textContent = 'Sign In';
+          btn.disabled = false;
+        }
+      } catch (err) {
+        errorMsg.textContent = 'Connection error. Is the server running?';
+        errorMsg.style.display = 'block';
+        btn.textContent = 'Sign In';
+        btn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

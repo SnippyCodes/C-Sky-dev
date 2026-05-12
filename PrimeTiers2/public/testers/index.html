@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PrimeTiers | Testers</title>
+  <link rel="stylesheet" href="/css/globals.css"/>
+  <link rel="stylesheet" href="/css/navbar.css"/>
+  <link rel="stylesheet" href="/css/testers.css"/>
+</head>
+<body>
+  <main style="padding-top:80px">
+    <div class="container">
+      <div class="page-header" style="padding:48px 0 36px;text-align:center">
+        <div class="page-header-badge">CERTIFIED TEAM</div>
+        <h1 class="section-title" style="font-size:2.4rem;margin:12px 0 10px">Our Testers</h1>
+        <p class="section-subtitle">Verified players who rank the competitive community</p>
+      </div>
+
+      <!-- Stats bar -->
+      <div class="testers-stats" id="testersStats"></div>
+
+      <!-- Tester Cards -->
+      <div class="testers-grid" id="testersGrid">
+        <div class="skeleton" style="height:280px;border-radius:14px"></div>
+        <div class="skeleton" style="height:280px;border-radius:14px"></div>
+        <div class="skeleton" style="height:280px;border-radius:14px"></div>
+      </div>
+
+      <!-- Reputation / Requirements -->
+      <div class="testers-reputation" id="testersReputation"></div>
+    </div>
+  </main>
+
+  <!-- Tester Detail Modal -->
+  <div class="tester-modal-overlay" id="testerModalOverlay" onclick="closeTesterModal(event)">
+    <div class="tester-modal" id="testerModal"></div>
+  </div>
+
+  <script src="/js/components.js"></script>
+  <script src="/js/testers.js"></script>
+</body>
+</html>

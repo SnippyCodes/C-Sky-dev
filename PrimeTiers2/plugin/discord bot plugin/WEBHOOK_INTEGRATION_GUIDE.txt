@@ -1,0 +1,127 @@
+===============================================
+PrimeTiers Webhook Integration Guide
+===============================================
+
+OPTION 1: BOT SENDS WEBHOOKS TO YOUR WEBSITE
+===============================================
+
+Config.yml Setup:
+-----------------
+webhook-enabled: true
+webhook-url: "https://primetiers.qzz.io/api/webhook"
+
+
+Webhook Payload Examples:
+--------------------------
+
+1. TIER UPDATE:
+{
+  "action": "update",
+  "ign": "SenseiRaiii",
+  "gamemode": "axe-and-shield",
+  "tier": "HT1",
+  "points": 60,
+  "timestamp": 1234567890
+}
+
+2. TIER REMOVAL:
+{
+  "action": "remove",
+  "ign": "SenseiRaiii",
+  "gamemode": "axe-and-shield",
+  "timestamp": 1234567890
+}
+
+3. LEADERBOARD RESET:
+{
+  "action": "reset",
+  "timestamp": 1234567890
+}
+
+
+Website Endpoint (Node.js/Express Example):
+--------------------------------------------
+
+app.post('/api/webhook', (req, res) => {
+    const { action, ign, gamemode, tier, points } = req.body;
+    
+    if (action === 'update') {
+        // Update player tier in database
+        console.log(`${ign} got ${tier} in ${gamemode}`);
+        // Refresh leaderboard on frontend
+    } else if (action === 'remove') {
+        // Remove player tier from database
+        console.log(`${ign} tier removed from ${gamemode}`);
+    } else if (action === 'reset') {
+        // Clear all leaderboard data
+        console.log('Leaderboard reset');
+    }
+    
+    res.status(200).json({ success: true });
+});
+
+
+===============================================
+
+OPTION 2: WEBSITE FETCHES FROM BOT API
+===============================================
+
+Config.yml Setup:
+-----------------
+api-enabled: true
+api-port: 8080
+webhook-enabled: false
+
+
+Website Code (JavaScript):
+---------------------------
+
+const API_URL = 'http://PrimePvP.qzz.io:8080/api';
+
+// Fetch on page load
+async function loadLeaderboard(gamemode) {
+    const response = await fetch(`${API_URL}/leaderboard?gamemode=${gamemode}`);
+    const data = await response.json();
+    displayPlayers(data.leaderboard);
+}
+
+// Auto-refresh every 30 seconds
+setInterval(() => {
+    loadLeaderboard(currentGamemode);
+}, 30000);
+
+
+===============================================
+
+RECOMMENDED: HYBRID APPROACH
+===============================================
+
+1. Enable both API and Webhook:
+   api-enabled: true
+   webhook-enabled: true
+
+2. Website receives instant webhook updates
+3. Website also polls API every 30s as backup
+4. Best of both worlds - instant + reliable
+
+
+===============================================
+
+WEBHOOK SECURITY (Optional):
+===============================================
+
+Add secret key verification:
+
+Config:
+webhook-secret: "your-secret-key-here"
+
+Website:
+const secret = req.headers['x-webhook-secret'];
+if (secret !== 'your-secret-key-here') {
+    return res.status(401).json({ error: 'Unauthorized' });
+}
+
+
+===============================================
+Build: target\primetiers-bot-2.3.0.jar
+===============================================

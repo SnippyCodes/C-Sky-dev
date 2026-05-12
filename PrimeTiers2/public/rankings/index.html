@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PrimeTiers | Tier List</title>
+  <meta name="description" content="The official PrimeTiers competitive tier list. Browse all ranked players by mode and tier."/>
+  <link rel="stylesheet" href="/css/globals.css"/>
+  <link rel="stylesheet" href="/css/navbar.css"/>
+  <link rel="stylesheet" href="/css/rankings.css"/>
+</head>
+<body>
+  <main style="padding-top:64px">
+
+    <!-- Sticky mode tabs + filters -->
+    <div class="tierlist-topbar">
+      <div class="container">
+        <div class="tierlist-tabs" id="modeTabs">
+          <!-- Injected by JS -->
+        </div>
+        <div class="tierlist-filters">
+          <select class="form-select" id="regionFilter">
+            <option value="">All Regions</option>
+            <option value="NA">NA</option>
+            <option value="EU">EU</option>
+            <option value="AS">AS</option>
+            <option value="SA">SA</option>
+            <option value="OC">OC</option>
+            <option value="AF">AF</option>
+          </select>
+          <input type="text" class="form-input" id="searchInput"
+                 placeholder="Search player..." autocomplete="off" style="width:160px"/>
+        </div>
+      </div>
+      <div class="container tierlist-info-bar">
+        <div class="tierlist-info-label" id="infoBtn" style="cursor:pointer" onclick="document.getElementById('infoModalOverlay').classList.add('open')"><span class="info-icon">ℹ</span> Information</div>
+        <div class="tierlist-info-items">
+          <img src="/img/server-icon.png" width="32" height="32" style="border-radius:6px;flex-shrink:0" alt="PrimePvP" onerror="this.style.display='none'"/>
+          <div class="tierlist-server-ip-wrap">
+            <span class="tierlist-server-ip-label">SERVER IP</span>
+            <span class="tierlist-server-ip-value" id="rankingsIpCopy" title="Click to copy">PrimePvP.qzz.io</span>
+          </div>
+          <a href="https://discord.gg/eDNEpky8Tf" target="_blank" class="btn btn-discord btn-sm" style="padding:5px 10px">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057.1 18.08.114 18.1.133 18.113a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tier columns -->
+    <div class="container">
+      <div id="tierlistContent" class="tierlist-content">
+        <!-- Injected by JS -->
+      </div>
+    </div>
+
+    <!-- Information Modal -->
+    <div class="info-modal-overlay" id="infoModalOverlay" onclick="closeInfoModal(event)">
+      <div class="info-modal">
+        <button class="info-modal-close" onclick="document.getElementById('infoModalOverlay').classList.remove('open')">✕</button>
+
+        <!-- Tabs -->
+        <div class="info-modal-tabs">
+          <button class="info-tab active" id="tabTitles" onclick="switchInfoTab('titles')">Titles</button>
+          <button class="info-tab" id="tabPoints" onclick="switchInfoTab('points')">Points</button>
+        </div>
+
+        <!-- Points Tab -->
+        <div class="info-tab-content" id="contentPoints" style="display:none">
+          <h3 class="info-modal-heading">How <u>ranking points</u> are calculated</h3>
+          <div class="info-tier-list">
+            <div class="info-tier-row">
+              <div class="info-tier-title info-tier-gold"><img src="/img/tier_1.svg" width="20" height="20"/> Tier 1</div>
+              <div class="info-tier-badges">
+                <span class="info-pts-chip info-pts-gold"><span>⇈</span> 60 Points</span>
+                <span class="info-pts-chip info-pts-gold-lt"><span>↑</span> 45 Points</span>
+              </div>
+            </div>
+            <div class="info-tier-row">
+              <div class="info-tier-title info-tier-silver"><img src="/img/tier_2.svg" width="20" height="20"/> Tier 2</div>
+              <div class="info-tier-badges">
+                <span class="info-pts-chip info-pts-silver"><span>⇈</span> 30 Points</span>
+                <span class="info-pts-chip info-pts-silver-lt"><span>↑</span> 20 Points</span>
+              </div>
+            </div>
+            <div class="info-tier-row">
+              <div class="info-tier-title info-tier-bronze"><img src="/img/tier_3.svg" width="20" height="20"/> Tier 3</div>
+              <div class="info-tier-badges">
+                <span class="info-pts-chip info-pts-bronze"><span>⇈</span> 10 Points</span>
+                <span class="info-pts-chip info-pts-bronze-lt"><span>↑</span> 6 Points</span>
+              </div>
+            </div>
+            <div class="info-tier-row">
+              <div class="info-tier-title info-tier-plain">Tier 4</div>
+              <div class="info-tier-badges">
+                <span class="info-pts-chip info-pts-plain"><span>⇈</span> 4 Points</span>
+                <span class="info-pts-chip info-pts-plain"><span>↑</span> 3 Points</span>
+              </div>
+            </div>
+            <div class="info-tier-row">
+              <div class="info-tier-title info-tier-plain">Tier 5</div>
+              <div class="info-tier-badges">
+                <span class="info-pts-chip info-pts-plain"><span>⇈</span> 2 Points</span>
+                <span class="info-pts-chip info-pts-plain"><span>↑</span> 1 Point</span>
+              </div>
+            </div>
+          </div>
+          <p style="font-size:0.72rem;color:var(--text-muted);margin-top:14px">⇈ = High Tier &nbsp;|&nbsp; ↑ = Low Tier &nbsp;|&nbsp; Top 3 mode scores count toward total</p>
+        </div>
+
+        <!-- Titles Tab -->
+        <div class="info-tab-content" id="contentTitles">
+          <h3 class="info-modal-heading">How to obtain <u>Achievement Titles</u></h3>
+          <div class="info-badge-list">
+            <div class="info-badge-row">
+              <img src="/img/combat_grandmaster.webp" width="28" height="28" alt="Combat Grandmaster"/>
+              <div>
+                <div class="info-badge-name info-badge-grandmaster">Combat Grandmaster</div>
+                <div class="info-badge-desc">Obtained 400+ total points.</div>
+              </div>
+            </div>
+            <div class="info-badge-row">
+              <img src="/img/combat_master.webp" width="28" height="28" alt="Combat Master"/>
+              <div>
+                <div class="info-badge-name info-badge-master">Combat Master</div>
+                <div class="info-badge-desc">Obtained 250+ total points.</div>
+              </div>
+            </div>
+            <div class="info-badge-row">
+              <img src="/img/combat_ace.svg" width="28" height="28" alt="Combat Ace"/>
+              <div>
+                <div class="info-badge-name info-badge-ace">Combat Ace</div>
+                <div class="info-badge-desc">Obtained 100+ total points.</div>
+              </div>
+            </div>
+            <div class="info-badge-row">
+              <img src="/img/combat_specialist.svg" width="28" height="28" alt="Combat Specialist"/>
+              <div>
+                <div class="info-badge-name info-badge-specialist">Combat Specialist</div>
+                <div class="info-badge-desc">Obtained 50+ total points.</div>
+              </div>
+            </div>
+            <div class="info-badge-row">
+              <img src="/img/combat_cadet.svg" width="28" height="28" alt="Combat Cadet"/>
+              <div>
+                <div class="info-badge-name info-badge-cadet">Combat Cadet</div>
+                <div class="info-badge-desc">Obtained 20+ total points.</div>
+              </div>
+            </div>
+            <div class="info-badge-row">
+              <img src="/img/combat_novice.svg" width="28" height="28" alt="Combat Novice"/>
+              <div>
+                <div class="info-badge-name info-badge-novice">Combat Novice</div>
+                <div class="info-badge-desc">Obtained 10+ total points.</div>
+              </div>
+            </div>
+            <div class="info-badge-row">
+              <img src="/img/rookie.svg" width="28" height="28" alt="Rookie"/>
+              <div>
+                <div class="info-badge-name info-badge-rookie">Rookie</div>
+                <div class="info-badge-desc">Starting rank for players with less than 10 points.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="/js/components.js"></script>
+  <script src="/js/rankings.js"></script>
+</body>
+</html>

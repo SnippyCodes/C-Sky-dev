@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PrimeTiers | Compare Players</title>
+  <link rel="stylesheet" href="/css/globals.css"/>
+  <link rel="stylesheet" href="/css/navbar.css"/>
+  <link rel="stylesheet" href="/css/compare.css"/>
+</head>
+<body>
+  <main style="padding-top:80px">
+    <div class="container">
+      <div class="page-header" data-reveal style="text-align:center;padding:48px 0 32px">
+        <h1 class="section-title">⚔️ Compare Players</h1>
+        <p class="section-subtitle">Side-by-side tier comparison across all game modes</p>
+      </div>
+
+      <!-- Player Search -->
+      <div class="compare-search glass-card">
+        <div class="compare-player-input">
+          <label class="form-label">Player 1</label>
+          <div style="display:flex;gap:8px">
+            <input type="text" class="form-input" id="player1Input" placeholder="Enter username..."/>
+            <button class="btn btn-secondary" onclick="loadPlayer(1)">Search</button>
+          </div>
+        </div>
+        <div class="compare-vs">VS</div>
+        <div class="compare-player-input">
+          <label class="form-label">Player 2</label>
+          <div style="display:flex;gap:8px">
+            <input type="text" class="form-input" id="player2Input" placeholder="Enter username..."/>
+            <button class="btn btn-secondary" onclick="loadPlayer(2)">Search</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Comparison Result -->
+      <div id="compareResult" style="margin-top:32px"></div>
+    </div>
+  </main>
+
+  <script src="/js/components.js"></script>
+  <script src="/js/compare.js"></script>
+</body>
+</html>
